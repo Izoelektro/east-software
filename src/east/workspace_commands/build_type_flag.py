@@ -217,10 +217,12 @@ def construct_extra_cmake_arguments(east, build_type, board, build_dir, source_d
         sample_name = os.path.basename(cwd)
         sample_dict = return_dict_on_match(sample_array, "name", sample_name)
 
-        if not sample_dict or "inherit-build-type" not in sample_dict:
-            # In case where there is no inherit, or sample is not listed we default to
-            # plain west behavior: no cmake args.
+        # In case where there is no inherit, or sample is not listed we default to
+        # plain west behavior: no cmake args.
+        if not sample_dict:
+            return ("", "")
 
+        if "inherit-build-type" not in sample_dict:
             custom_dts = sample_dict.get("dts-config")
             if custom_dts:
                 dts_config = ";".join([f"{board}/{file}" for file in custom_dts])
