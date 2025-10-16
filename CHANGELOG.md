@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [0.28.1] - 2025-10-16
+
 ## [0.28.0] - 2025-05-28
 
 ### Changed
@@ -818,7 +820,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Docker scripts for building and running docker containers, for development
   purposes.
 
-[unreleased]: https://github.com/IRNAS/irnas-east-software/compare/v0.28.0...HEAD
+[unreleased]: https://github.com/Izoelektro/east-software/compare/v0.28.1...HEAD
+[0.28.1]: https://github.com/Izoelektro/east-software/compare/v0.28.0...v0.28.1
 [0.28.0]: https://github.com/IRNAS/irnas-east-software/compare/v0.27.2...v0.28.0
 [0.27.2]: https://github.com/IRNAS/irnas-east-software/compare/v0.27.1...v0.27.2
 [0.27.1]: https://github.com/IRNAS/irnas-east-software/compare/v0.27.0...v0.27.1
