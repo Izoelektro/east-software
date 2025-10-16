@@ -31,6 +31,12 @@ mapping:
                     type: seq
                     sequence:
                       - type: str
+                  # Dts files should be placed inside ../../boards/arm/{board}/{file}, here you just write the filename
+                  dts-files:
+                    required: false
+                    type: seq
+                    sequence:
+                      - type: str
 
   samples:
     # samples key is optional, but it needs to be a sequence
@@ -57,6 +63,12 @@ mapping:
                 type: str
               build-type:
                 type: str
+          # Dts file with same filename should be placed for all board types inside {board}/{file}
+          dts-config:
+            required: false
+            type: seq
+            sequence:
+              - type: str
   version:
     type: map
     required: false

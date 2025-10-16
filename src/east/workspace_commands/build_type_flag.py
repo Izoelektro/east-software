@@ -23,7 +23,7 @@ def is_child_in_parent(parent, child):
 
 
 def _construct_required_cmake_args(
-    conf_files: List[str], board: str, path_prefix: str, source_dir: str
+    conf_files: List[str], dts_files: List[str], board: str, path_prefix: str, source_dir: str
 ) -> str:
     """Constructs required cmake args from conf_files. Adds board specific conf file if it
     is found.
@@ -65,6 +65,10 @@ def _construct_required_cmake_args(
     if len(overlay_configs) > 0:
         overlay_config = ";".join([f"{prefix}conf/{file}" for file in overlay_configs])
         cmake_args += f' -DOVERLAY_CONFIG="{overlay_config}"'
+
+    if len(dts_files)  > 0:
+        dts_config = ";".join([f"../../boards/arm/{board}/{file}" for file in dts_files])
+        cmake_args += f' -DDTC_OVERLAY_FILE="{dts_config}"'
 
     return f"{cmake_args}"
 
@@ -216,6 +220,12 @@ def construct_extra_cmake_arguments(east, build_type, board, build_dir, source_d
         if not sample_dict or "inherit-build-type" not in sample_dict:
             # In case where there is no inherit, or sample is not listed we default to
             # plain west behavior: no cmake args.
+
+            custom_dts = sample_dict.get("dts-config")
+            if custom_dts:
+                dts_config = ";".join([f"{board}/{file}" for file in custom_dts])
+                return (f" -DDTC_OVERLAY_FILE={dts_config}", "Found custom dts")
+
             return ("", "")
 
         # Determine if we have to inherit from some app or we can just use prj.conf
@@ -267,17 +277,19 @@ def construct_extra_cmake_arguments(east, build_type, board, build_dir, source_d
 
     # Extract a list of conf files from the app, exit if they do not exist.
     conf_files = []
+    dts_files = []
     if build_type:
         matched_type = return_dict_on_match(app["build-types"], "type", build_type)
         if not matched_type:
             east.print(no_build_type_msg(build_type))
             east.exit()
 
-        conf_files = matched_type["conf-files"]
+        conf_files = matched_type.get("conf-files", [])
+        dts_files = matched_type.get("dts-files", [])
 
     # Construct required cmake args,
     required_cmake_args = _construct_required_cmake_args(
-        conf_files, board, path_prefix, source_dir
+        conf_files, dts_files, board, path_prefix, source_dir
     )
 
     # Check build type of previous build
