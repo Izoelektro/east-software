@@ -1,4 +1,5 @@
 import click
+import os
 
 from ..east_context import east_command_settings
 from ..helper_functions import get_device_in_runner_yaml, get_jlink_speed_in_runner_yaml
@@ -158,4 +159,8 @@ def rtt(east, local_echo, rtt_port, logfile, append):
         )
         east.exit()
 
-    east.run(rtt_cmd)
+    try:
+        east.run(rtt_cmd)
+    finally:
+        # Reset terminal to restore proper text visibility and colors
+        os.system("reset")
